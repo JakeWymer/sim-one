@@ -7,13 +7,21 @@ class Form extends Component {
     this.state = {
       imgurl: '',
       name: '',
-      price: ''
+      price: '',
+      selectedProductId: null
     };
     this.handleInput = this.handleInput.bind(this);
     this.clearInput = this.clearInput.bind(this);
     this.createProduct = this.createProduct.bind(this);
+    this.updateProduct = this.updateProduct.bind(this);
   }
   
+  componentDidUpdate(prevProps) {
+    if(prevProps.selectedProduct !== this.props.selectedProduct) {
+      this.setState({selectedProductId: this.props.selectedProduct.id});
+    }
+  }
+
   handleInput(e) {
     this.setState({[e.target.name]: e.target.value});
   }
@@ -23,14 +31,29 @@ class Form extends Component {
   }
 
   createProduct() {
-    axios.post('/api/product', {name: this.state.name, price: this.state.price, imgurl: this.state.imgurl});
+    let {name, price, imgurl} = this.state;
+    axios.post('/api/product', {name, price, imgurl})
+      .then(() => {
+        this.clearInput();
+        this.props.getInventory();
+      });
+  }
 
-    this.clearInput();
-
-    this.props.getInventory();
+  updateProduct() {
+    let {name, price, imgurl} = this.state;
+    console.log(this.state.selectedProductId, );
+    axios.put(`/api/product/${this.state.selectedProductId}`, {name, price, imgurl})
+      .then(() => {
+        this.clearInput();
+        this.props.getInventory();
+      });
   }
 
   render() {
+    let formButton = <button onClick={this.createProduct}>Add To Inventory</button>
+    if(this.state.selectedProductId) {
+      formButton = <button onClick={this.updateProduct}>Save Changes</button>
+    }
     return (
       <div>
         <input 
@@ -51,7 +74,7 @@ class Form extends Component {
           value={this.state.price}
           onChange={this.handleInput}
           placeholder="price"/>
-        <button onClick={this.createProduct}>Add</button>
+        {formButton}
         <button onClick={this.clearInput}>Cancel</button>          
       </div>
     );
