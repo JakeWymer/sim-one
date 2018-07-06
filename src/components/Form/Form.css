@@ -1,0 +1,24 @@
+.form-wrap {
+    width: 30%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #3ad886;
+    margin: 20px;
+}
+
+.form-wrap input {
+    width: 100%;
+}
+
+.preview {
+    width: 350px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+label {
+    align-self: flex-start;
+}

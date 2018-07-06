@@ -1,0 +1,43 @@
+.product {
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+    height: 200px;
+    background-color: #d34735;
+    margin: 20px;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.img-panel {
+    height: 100%;
+    width: 350px;
+    background-size: cover;
+    background-position: center;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 220px;
+}
+
+.product-info > * {
+    width: 100%;
+}
+
+.info {
+    text-align: left;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons button {
+    background-color: #3ad886;
+    padding: 5px;
+}

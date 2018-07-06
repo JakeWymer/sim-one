@@ -1,0 +1,25 @@
+header {
+    display: flex;
+    background-color: #ab2a19;
+    align-items: center;
+}
+
+.branding {
+    display: flex;
+    width: 15%;
+    justify-content: space-around;
+    color: white;
+}
+
+.branding img {
+    height: 50px;
+    margin: auto 0;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #ed6b5a;
+    border: none;
+    border-radius: 5px;
+    margin-left: 20px;
+}

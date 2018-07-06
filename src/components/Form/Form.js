@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import './Form.css';
 
 class Form extends Component {
   constructor(props) {
@@ -8,13 +9,14 @@ class Form extends Component {
       imgurl: '',
       name: '',
       price: '',
-      selectedProductId: null
+      preview: 'http://via.placeholder.com/350x150'
     };
     this.handleInput = this.handleInput.bind(this);
     this.clearInput = this.clearInput.bind(this);
     this.createProduct = this.createProduct.bind(this);
     this.updateProduct = this.updateProduct.bind(this);
     this.getOne = this.getOne.bind(this);
+    this.updatePreview = this.updatePreview.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +37,7 @@ class Form extends Component {
     let {imgurl, name, price} = res.data[0];
 
     this.setState({imgurl, name, price});
+    this.updatePreview();
   }
 
   handleInput(e) {
@@ -63,33 +66,50 @@ class Form extends Component {
       });
   }
 
+  updatePreview() {
+    this.setState({preview: this.state.imgurl});
+  }
+
   render() {
     let formButton = <button onClick={this.createProduct}>Add To Inventory</button>
     if(this.props.match.params.id) {
       formButton = <button onClick={this.updateProduct}>Save Changes</button>
     }
     return (
-      <div>
-        <input 
-          type="text" 
-          name="imgurl"
-          value={this.state.imgurl}
-          onChange={this.handleInput}
-          placeholder="imgurl"/>
-        <input 
-          type="text" 
-          name="name"
-          value={this.state.name}
-          onChange={this.handleInput}
-          placeholder="name"/>
-        <input
-          type="text"
-          name="price"
-          value={this.state.price}
-          onChange={this.handleInput}
-          placeholder="price"/>
-        {formButton}
-        <button onClick={this.clearInput}>Cancel</button>          
+      <div className="wrapper">
+        <div className="form-wrap">
+          <div className="preview" style={{backgroundImage:`url(${this.state.preview})`}}>
+          </div>
+          <label htmlFor="imgurl">Image URL:</label>
+          <input 
+            type="text" 
+            id="imgurl"
+            name="imgurl"
+            value={this.state.imgurl}
+            onChange={this.handleInput}
+            placeholder="imgurl"
+            onBlur={this.updatePreview}/>
+          <label htmlFor="name">Product Name:</label>
+          <input 
+            type="text" 
+            id="name"
+            name="name"
+            value={this.state.name}
+            onChange={this.handleInput}
+            placeholder="name"/>
+          <label htmlFor="price">Price:</label>
+          <input
+            type="text"
+            id="price"
+            name="price"
+            value={this.state.price}
+            onChange={this.handleInput}
+            placeholder="price"/>
+          <div className="button-wrap">
+            {formButton}
+            <button onClick={this.clearInput}>Cancel</button>
+          </div>          
+        </div>
       </div>
     );
   }
