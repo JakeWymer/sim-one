@@ -21,6 +21,7 @@ app.get('/api/inventory', controller.read);
 app.post('/api/product', controller.create);
 app.delete('/api/product/:id', controller.remove);
 app.put('/api/product/:id', controller.update);
+app.get('/api/product/:id', controller.getOne);
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);

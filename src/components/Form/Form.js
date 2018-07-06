@@ -14,12 +14,27 @@ class Form extends Component {
     this.clearInput = this.clearInput.bind(this);
     this.createProduct = this.createProduct.bind(this);
     this.updateProduct = this.updateProduct.bind(this);
+    this.getOne = this.getOne.bind(this);
+  }
+
+  componentDidMount() {
+    if(this.props.match.params.id) {
+      this.getOne();
+    }
   }
   
   componentDidUpdate(prevProps) {
-    if(prevProps.selectedProduct !== this.props.selectedProduct) {
-      this.setState({selectedProductId: this.props.selectedProduct.id});
+    if(prevProps.match.params.id && !this.props.match.params.id) {
+      this.clearInput();
     }
+  }
+
+  async getOne() {
+    let res = await axios.get(`/api/product/${this.props.match.params.id}`);
+    console.log(res);
+    let {imgurl, name, price} = res.data[0];
+
+    this.setState({imgurl, name, price});
   }
 
   handleInput(e) {
@@ -35,23 +50,22 @@ class Form extends Component {
     axios.post('/api/product', {name, price, imgurl})
       .then(() => {
         this.clearInput();
-        this.props.getInventory();
+        this.props.history.push('/');
       });
   }
 
   updateProduct() {
     let {name, price, imgurl} = this.state;
-    console.log(this.state.selectedProductId, );
-    axios.put(`/api/product/${this.state.selectedProductId}`, {name, price, imgurl})
+    axios.put(`/api/product/${this.props.match.params.id}`, {name, price, imgurl})
       .then(() => {
         this.clearInput();
-        this.props.getInventory();
+        this.props.history.push('/');
       });
   }
 
   render() {
     let formButton = <button onClick={this.createProduct}>Add To Inventory</button>
-    if(this.state.selectedProductId) {
+    if(this.props.match.params.id) {
       formButton = <button onClick={this.updateProduct}>Save Changes</button>
     }
     return (

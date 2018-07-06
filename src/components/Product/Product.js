@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const Product = (props) => {
   return (
@@ -6,7 +7,7 @@ const Product = (props) => {
       <p>{props.product.name}</p>
       <p>{props.product.imgurl}</p>
       <p>{props.product.price}</p>
-      <button onClick={() => props.selectProduct(props.product)}>Edit</button>
+      <Link to={`/edit/${props.product.id}`}><button>Edit</button></Link>
       <button onClick={() => props.deleteProduct(props.product.id)}>Delete</button>
     </div>
   );

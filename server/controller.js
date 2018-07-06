@@ -42,9 +42,19 @@ const update = (req, res) => {
     });
 }
 
+const getOne = (req, res) => {
+  req.app.get('db').get_one(req.params.id)
+    .then(product => res.status(200).send(product))
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+}
+
 module.exports = {
   create,
   read,
   remove,
-  update
+  update,
+  getOne
 }

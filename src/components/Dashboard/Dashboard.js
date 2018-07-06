@@ -6,16 +6,30 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      inventory: []
+    };
+
     this.deleteProduct = this.deleteProduct.bind(this);
+    this.getInventory = this.getInventory.bind(this);
   }
   
+  componentDidMount() {
+    this.getInventory();
+  }
+
   deleteProduct(id) {
     axios.delete(`/api/product/${id}`);
-    this.props.getInventory();
+    this.getInventory();
+  }
+
+  async getInventory() {
+    let products = await axios.get('/api/inventory');
+    this.setState({inventory: products.data});
   }
 
   render() {
-    let products = this.props.inventory.map((e, i) => {
+    let products = this.state.inventory.map((e, i) => {
       return <Product 
                 key={i} 
                 product={e}
